@@ -79,8 +79,13 @@
         <DockPanel LastChildFill="True">
             
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="Aquamarine" >
-                    <Button x:Name="BtnPencil" Content="Карандашь" Style="{StaticResource AeroButtonStyle}" />
-                <Button x:Name="BtnEraser" Content="Ластик" Style="{StaticResource AeroButtonStyle}" />
+                    <Button x:Name="BtnOpen" Content="Открыть" Style="{StaticResource AeroButtonStyle}" />
+                    <Button x:Name="BtnSave" Content="Сохранить" Style="{StaticResource AeroButtonStyle}" />
+
+                <Separator Margin="5, 0, 10, 0" Background="#99CCFF" Width="2"/>
+
+                <Button x:Name="BtnPencil" Content="Карандашь" Style="{StaticResource AeroButtonStyle}" />
+                    <Button x:Name="BtnEraser" Content="Ластик" Style="{StaticResource AeroButtonStyle}" />
                     <Button x:Name="BtnClear" Content="Очистить" Style="{StaticResource AeroButtonStyle}" />
                 </StackPanel>
 

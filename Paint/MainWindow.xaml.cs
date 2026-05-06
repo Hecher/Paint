@@ -9,6 +9,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
+using System.IO;
+
 
 namespace Paint
 {
@@ -31,6 +34,9 @@ namespace Paint
             BtnPencil.Click += BtnPencil_Click;
             BtnEraser.Click += BtnEraser_Click;
             BtnClear.Click += BtnClear_Click;
+
+            BtnSave.Click += BtnSave_Click;
+            BtnOpen.Click += BtnOpen_Click;
 
         }
 
@@ -77,6 +83,56 @@ namespace Paint
         private void BtnClear_Click(object sender, RoutedEventArgs e)
         {
             DrawingCanvas.Children.Clear();
+        }
+
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = "Сохранить рисунок";
+            saveFileDialog.Filter = "PNG Image (*.png)|*.png|JPEG Image (*.jpg)|*.jpg|BMP Image (*.bmp)|*.bmp";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                int width = (int)DrawingCanvas.ActualWidth;
+                int height = (int)DrawingCanvas.ActualHeight;
+
+                if (width == 0 || height == 0) return;
+
+                RenderTargetBitmap renderBitmap = new RenderTargetBitmap(width, height, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+
+                renderBitmap.Render(DrawingCanvas);
+
+                BitmapEncoder encoder;
+
+                string extension = System.IO.Path.GetExtension(saveFileDialog.FileName).ToLower();
+
+                switch (extension)
+                {
+                    case ".jpg":
+                    case ".jpeg":
+                        encoder = new JpegBitmapEncoder();
+                        break;
+                    case ".bmp":
+                        encoder = new BmpBitmapEncoder();
+                        break;
+                    default:
+                        encoder = new PngBitmapEncoder();
+                        break;
+                }
+
+                encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
+
+                using (FileStream fileStream = File.Create(saveFileDialog.FileName))
+                {
+                    encoder.Save(fileStream);
+                }
+            }
+
+        }
+
+        private void BtnOpen_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
