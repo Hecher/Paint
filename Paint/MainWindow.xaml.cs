@@ -132,6 +132,33 @@ namespace Paint
 
         private void BtnOpen_Click(object sender, RoutedEventArgs e)
         {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Открыть рисунок";
+            openFileDialog.Filter = "Images|*.png;*.jpg;*.jpeg;*.bmp";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    BitmapImage bitmap = new BitmapImage(new Uri(openFileDialog.FileName));
+
+                    Image imageElement = new Image
+                    {
+                        Source = bitmap,
+                        Width = bitmap.Width,
+                        Height = bitmap.Height
+                    };
+
+                    DrawingCanvas.Children.Clear();
+                    DrawingCanvas.Children.Insert(0, imageElement);
+
+
+                } catch (Exception ex)
+                {
+                    MessageBox.Show("Не удалось открыть картинку: " + ex.Message);
+                }
+
+            }
 
         }
     }
